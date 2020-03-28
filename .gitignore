@@ -6,3 +6,13 @@ crash.log
 
 # For built boxes
 *.box
+
+# Arm image
+*.img
+output-arm-image/
+
+# vagrant
+.vagrant/
+
+# ssh key
+.ssh/
