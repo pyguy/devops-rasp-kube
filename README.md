@@ -1,5 +1,5 @@
 # Kuberenetes cluster on RaspberryPi the DevOps way
-
+![Etcher](_docs/rpi-image.png)
 This repo installs [K3S](https://k3s.io) kubernetes cluster on 3 raspberry pi computers. I used recent raspberry pi model (4B) for this demo but you can install it on almost all modern raspberry pi models. (RPi 2,3 and 4)
 
 We'd like to use DevOps/Cloud tools such as `docker`, `packer` and `ansible` to make it cool like we are running the cluster on our own home private cloud ;-) 
