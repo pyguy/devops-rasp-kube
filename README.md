@@ -4,13 +4,13 @@ This repo installs [K3S](https://k3s.io) kubernetes cluster on 3 raspberry pi co
 
 We'd like to use DevOps/Cloud tools such as `docker`, `packer` and `ansible` to make it cool like we are running the cluster on our own home private cloud ;-) 
 
-## Build the raspberry pi image
+## Build the raspberry pi packer image
 
-We're going to build rapsberry pi images by `packer` using [packer-builder-arm-image](pyguy/packer-builder-arm-image) repo.
+We're going to build rapsberry pi images by `packer` using [packer-builder-arm-image](https://github.com/pyguy/packer-builder-arm-image) repo.
 
 ### Docker
 
-Clone [packer-builder-arm-image](pyguy/packer-builder-arm-image) repository:
+Clone [packer-builder-arm-image](https://github.com/pyguy/packer-builder-arm-image) repository:
 
    `git clone github.com/pyguy/packer-builder-arm-image`
 
@@ -21,7 +21,7 @@ cd packer-builder-arm-image/
 
 docker build -t packer-builder-arm:latest .
 ```
-Run the docker container to build the raspberry pi image:
+Run the docker container to build the raspberry pi packer image:
 
 ```bash
 cd packer/
