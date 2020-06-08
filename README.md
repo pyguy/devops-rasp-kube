@@ -10,21 +10,10 @@ We're going to build rapsberry pi images by `packer` using [packer-builder-arm-i
 
 ### Docker
 
-Clone [packer-builder-arm-image](https://github.com/pyguy/packer-builder-arm-image) repository:
-
-   `git clone github.com/pyguy/packer-builder-arm-image`
-
-Build the docker image:
-    
-```bash
-cd packer-builder-arm-image/
-
-docker build -t packer-builder-arm:latest .
-```
 Run the docker container to build the raspberry pi packer image:
 
 ```bash
-cd packer/
+cd packer/ && mkdir packer_cache output-arm-image
 
 docker run \
   --rm \
@@ -39,7 +28,7 @@ docker run \
   -e RPI_IP_ADDRESS=192.168.1.100/24 \
   -e RPI_GATEWAY=192.168.1.1 \
   -e RPI_DNS_SERVERS=8.8.8.8 \
-  packer-builder-arm build raspbian_kube.json
+  pyguy/packer-builder-arm build raspbian_kube.json
 ```
 The image will be placed on `output-arm-image` directory.
 
