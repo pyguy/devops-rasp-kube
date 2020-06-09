@@ -1,9 +1,11 @@
 #!/bin/bash
 
 ## install and upgrade packages
-apt update && DEBIAN_FRONTEND=noninteractive apt dist-upgrade -y
-DEBIAN_FRONTEND=noninteractive apt install -y vim git
-
+if $UPDATE_PKGS
+then
+    apt update && DEBIAN_FRONTEND=noninteractive apt dist-upgrade -y
+    DEBIAN_FRONTEND=noninteractive apt install -y vim git
+fi
 # use python3
 echo Setup python3
 rm -rf /usr/bin/python
@@ -25,6 +27,7 @@ echo '    PasswordAuthentication no' >> /etc/ssh/ssh_config
 echo Setup the hostname
 if [ $RPI_HOSTNAME ]
 then
+    echo "HOSTNAME: $RPI_HOSTNAME"
     echo $RPI_HOSTNAME > /etc/hostname
     echo `echo $RPI_IP_ADDRESS | cut -f1 -d/` $RPI_HOSTNAME >> /etc/hosts
 fi
@@ -33,10 +36,10 @@ fi
 echo Configure network settings
 if [ $RPI_DHCP_DISABLE ]
 then
-    {
-        echo "interface $RPI_INTERFACE"
-        echo "static ip_address=$RPI_IP_ADDRESS"
-        echo "static routers=$RPI_GATEWAY"
-        echo "static domain_name_servers=$RPI_DNS_SERVERS"
-    } >> /etc/dhcpcd.conf
+ tee -a /etc/dhcpcd.conf <<EOF
+interface $RPI_INTERFACE
+  static ip_address=$RPI_IP_ADDRESS
+  static routers=$RPI_GATEWAY
+  static domain_name_servers=$RPI_DNS_SERVERS
+EOF
 fi

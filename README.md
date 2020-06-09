@@ -28,6 +28,7 @@ docker run \
   -e RPI_IP_ADDRESS=192.168.1.100/24 \
   -e RPI_GATEWAY=192.168.1.1 \
   -e RPI_DNS_SERVERS=8.8.8.8 \
+  -e UPDATE_PKGS=false \
   pyguy/packer-builder-arm build raspbian_kube.json
 ```
 The image will be placed on `output-arm-image` directory.
