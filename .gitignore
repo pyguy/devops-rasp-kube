@@ -10,6 +10,7 @@ crash.log
 # Arm image
 *.img
 output-arm-image/
+packer-builder-arm-image
 
 # vagrant
 .vagrant/
