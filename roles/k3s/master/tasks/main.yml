@@ -36,10 +36,10 @@
   register: node_token
 
 - name: Store Master node-token
-  set_fact: 
-   token: "{{ node_token.content | b64decode | regex_replace('\n', '') }}"
+  set_fact:
+    token: "{{ node_token.content | b64decode | regex_replace('\n', '') }}"
 
-- name: Restore node-token file access 
+- name: Restore node-token file access
   file:
     path: /var/lib/rancher/k3s/server
     mode: "{{ p.stat.mode }}"
@@ -49,6 +49,7 @@
     path: ~{{ ansible_user }}/.kube
     state: directory
     owner: "{{ ansible_user }}"
+    mode: "u=rwx,g=rx,o="
 
 - name: Copy config file to user home directory
   copy:
@@ -56,11 +57,14 @@
     dest: ~{{ ansible_user }}/.kube/config
     remote_src: yes
     owner: "{{ ansible_user }}"
+    mode: "u=rw,g=,o="
 
-- name: Replace https://localhost:6443 by https://master-pi:6443
-  command: k3s kubectl config set-cluster default
-    --server=https://{{ master_ip }}:6443
-    --kubeconfig ~{{ ansible_user }}/.kube/config
+- name: Replace https://localhost:6443 by https://master-ip:6443
+  command: >-
+    k3s kubectl config set-cluster default
+      --server=https://{{ master_ip }}:6443
+      --kubeconfig ~{{ ansible_user }}/.kube/config
+  changed_when: true
 
 - name: Create kubectl symlink
   file:

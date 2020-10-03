@@ -6,17 +6,17 @@
   roles:
     - { role: prereq }
     - { role: download }
-    - { role: raspbian }
+    - { role: raspberrypi }
 
 
 - hosts: master
-#  gather_facts: yes
+  gather_facts: yes
   become: yes
   roles:
     - { role: k3s/master }
 
 - hosts: node
-#  gather_facts: yes
+  gather_facts: yes
   become: yes
   roles:
     - { role: k3s/node }

@@ -25,7 +25,7 @@ docker run \
   -e RPI_HOSTNAME=raspberrypi.local \
   -e RPI_DHCP_DISABLE=true \
   -e RPI_INTERFACE=eth0 \
-  -e RPI_IP_ADDRESS=192.168.1.100/24 \
+  -e RPI_IP_ADDRESS=192.168.1.1/24 \
   -e RPI_GATEWAY=192.168.1.1 \
   -e RPI_DNS_SERVERS=8.8.8.8 \
   -e UPDATE_PKGS=false \
