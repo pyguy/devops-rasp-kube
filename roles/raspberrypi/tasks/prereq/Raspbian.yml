@@ -23,3 +23,23 @@
     path: /usr/sbin/ip6tables-legacy
     name: ip6tables
   register: ip6_legacy
+
+- name: Install general apt packages
+  apt:
+    name: "{{ apt_pkgs }}"
+    state: present
+
+- name: Instal fail2ban package
+  apt:
+    name: fail2ban
+
+- name: Configure fail2ban local jail
+  template:
+    src: fail2ban.j2
+    dest: /etc/fail2ban/jail.local
+  notify: restart fail2ban
+
+- name: Install unattended-upgrades to perform security updates automatically
+  apt:
+    name: unattended-upgrades
+    state: present

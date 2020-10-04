@@ -20,6 +20,7 @@ mkdir /home/pi/.ssh
 # Disable password authentication
 echo Disable password authentication
 sed 's/#PasswordAuthentication yes/PasswordAuthentication no/g' -i /etc/ssh/sshd_config
+sed 's/UsePAM yes/UsePAM no/g' -i /etc/ssh/sshd_config
 
 # Set Raspberry pi hostname
 echo Setup the hostname

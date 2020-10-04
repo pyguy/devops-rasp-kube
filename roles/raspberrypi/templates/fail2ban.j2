@@ -1,0 +1,10 @@
+[ssh]
+ 
+enabled = true
+port = ssh
+filter = sshd
+logpath = /var/log/auth.log
+bantime = 900
+banaction = iptables-allports
+findtime = 900
+maxretry = 3

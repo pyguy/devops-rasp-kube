@@ -1,0 +1,4 @@
+apt_pkgs:
+    - dnsutils
+    - mtr
+    - vim
