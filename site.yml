@@ -4,19 +4,28 @@
   gather_facts: yes
   become: yes
   roles:
-    - { role: k3s/prereq }
-    - { role: k3s/download }
-    - { role: raspberrypi }
+    - { role: k3s/prereq, tags: ["k3s","prereq"] }
+    - { role: k3s/download, tags: ["k3s","prereq"] }
+    - { role: raspberrypi, tags: ["raspi"] }
 
 
 - hosts: master
   gather_facts: yes
   become: yes
   roles:
-    - { role: k3s/master }
+    - { role: k3s/master, tags: ["k3s"] }
 
 - hosts: node
   gather_facts: yes
   become: yes
   roles:
-    - { role: k3s/node }
+    - { role: k3s/node, tags: ["k3s"] }
+
+# deploy k8s apps
+- hosts: master
+  gather_facts: yes
+  environment:
+    K8S_AUTH_KUBECONFIG: /home/pi/.kube/config
+  roles:
+    - { role: k8s/pihole, tags: ["k8s","pihole"] }
+      

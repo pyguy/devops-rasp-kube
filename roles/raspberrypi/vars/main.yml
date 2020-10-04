@@ -1,4 +1,8 @@
+
+helm_version: v3.3.4
+
 apt_pkgs:
+    - python3-pip
     - dnsutils
     - mtr
     - vim

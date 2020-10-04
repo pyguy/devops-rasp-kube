@@ -29,6 +29,20 @@
     name: "{{ apt_pkgs }}"
     state: present
 
+- name: Install openshift python library
+  pip:
+    name: openshift
+
+- name: Download and install helm
+  unarchive:
+    src: "https://get.helm.sh/helm-{{ helm_version }}-linux-arm.tar.gz"
+    dest: /usr/local/bin
+    remote_src: yes
+    extra_opts: "--strip-components=1"
+    owner: root
+    group: root
+    mode: u=rwx,g=rx,o=rx
+
 - name: Instal fail2ban package
   apt:
     name: fail2ban

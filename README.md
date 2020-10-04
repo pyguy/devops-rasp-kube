@@ -78,3 +78,12 @@ Run the following ansible playbook command:
 ```bash
 ansible-plapybook -i inventory/hosts.ini reset.yml
 ```
+### Provision k8s applications
+Run the following command to install required collections:
+```bash
+ansible-galaxy install -r requirements.yml
+```
+Run the following ansible playbook command:
+```bash
+ansible-plapybook -i inventory/hosts.ini deploy.yml
+```

@@ -1,0 +1,33 @@
+---
+
+- name: Add mojo2600 (pihole) chart repo
+  community.kubernetes.helm_repository:
+    name: mojo2600
+    repo_url: "https://mojo2600.github.io/pihole-kubernetes/"
+
+- name: Create pihole namespace
+  community.kubernetes.k8s:
+    name: pihole
+    kind: Namespace
+    state: present
+
+- name: Add pihole admin password as a secret
+  community.kubernetes.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Secret
+      type: Opaque             
+      metadata:
+        name: pihole-admin
+        namespace: pihole     
+      data:
+        password: "{{ pihole_admin_pass | b64encode }}"
+
+- name: Deploy latest version of pihole chart inside pihole namespace (and create it)
+  community.kubernetes.helm:
+    name: pihole
+    chart_ref: mojo2600/pihole
+    release_namespace: pihole
+    values: "{{ lookup('template', 'pihole-values.yml.j2') | from_yaml }}"
+

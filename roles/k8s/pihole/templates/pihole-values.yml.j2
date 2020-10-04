@@ -1,0 +1,26 @@
+---
+image:
+  tag: {{ pihole_version }}
+persistentVolumeClaim:
+  enabled: true
+ingress:
+  enabled: true
+  path: /
+  hosts:
+    - {{ pihole_host }}
+serviceTCP:
+  loadBalancerIP: {{ hostvars['rpi-node1']['ansible_default_ipv4']['address'] }}
+  type: LoadBalancer
+serviceUDP:
+  loadBalancerIP: {{ hostvars['rpi-node1']['ansible_default_ipv4']['address'] }}
+  type: LoadBalancer
+resources:
+  limits:
+    cpu: 512m
+    memory: 512Mi
+  requests:
+    cpu: 200m
+    memory: 256Mi
+# If using in the real world, set up admin.existingSecret instead.
+admin:
+  existingSecret: pihole-admin

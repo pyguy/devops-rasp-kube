@@ -18,5 +18,8 @@ packer-builder-arm-image
 # ssh key
 .ssh/
 
+# vault_pass
+.vault_pass
+
 # self inventory file
 *hosts.ini
