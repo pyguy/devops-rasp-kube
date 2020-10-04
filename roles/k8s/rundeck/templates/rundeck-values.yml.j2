@@ -1,0 +1,23 @@
+image:
+  repository: pyguy/rundeck
+  tag: 3.3.3
+ingress:
+  enabled: true
+  paths:
+    - /
+  hosts:
+    - {{ rundeck_url }}
+persistence:
+  enabled: true
+  # Set claim.create:true  to have the helm chart manage the creation of a new PVC for this deployment
+  claim:
+    create: true
+    storageClass:
+    accessMode: ReadWriteOnce
+    size: 10G
+rundeck:
+  adminUser: "admin:{{ rundeck_admin_pass }},user,admin,architect,deploy,build"
+  env:
+    RUNDECK_GRAILS_URL: "http://{{ rundeck_url }}"
+nodeSelector:
+  k3s.io/hostname: rpi-node2

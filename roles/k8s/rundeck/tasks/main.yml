@@ -1,0 +1,22 @@
+---
+
+- name: Create rundeck namespace
+  community.kubernetes.k8s:
+    name: rundeck
+    kind: Namespace
+    state: present
+
+- include_tasks: database.yml
+
+- name: Add incubator (rundeck) chart repo
+  community.kubernetes.helm_repository:
+    name: incubator
+    repo_url: "http://storage.googleapis.com/kubernetes-charts-incubator"
+  
+- name: Deploy rundeck helm chart
+  community.kubernetes.helm:
+    name: rundeck
+    chart_ref: incubator/rundeck
+    release_namespace: rundeck
+    values: "{{ lookup('template', 'rundeck-values.yml.j2') | from_yaml }}"
+  

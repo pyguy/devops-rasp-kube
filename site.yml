@@ -28,4 +28,4 @@
     K8S_AUTH_KUBECONFIG: /home/pi/.kube/config
   roles:
     - { role: k8s/pihole, tags: ["k8s","pihole"] }
-      
+    - { role: k8s/rundeck, tags: ["k8s","rundeck"] } 

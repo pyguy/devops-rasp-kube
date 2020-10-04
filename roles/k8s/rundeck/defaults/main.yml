@@ -1,0 +1,9 @@
+---
+
+rundeck_version: 3.3.3
+rundeck_url: rundeck.rpi.local
+rundeck_admin_pass: admin
+
+rundeck_db_name: rundeckdb
+rundeck_db_user: postgres
+rundeck_db_pass: RundeckPostgresPassword

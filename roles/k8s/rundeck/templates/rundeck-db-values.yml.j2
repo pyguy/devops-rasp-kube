@@ -1,0 +1,25 @@
+---
+image:
+  repository: arm32v7/postgres
+  tag: 13.0
+persistence:
+  mountPath: /data
+  size: 20Gi
+postgresqlDatabase: {{ rundeck_db_name }}
+postgresqlUsername: {{ rundeck_db_user }}
+postgresqlPassword: {{ rundeck_db_pass }}
+postgresqlDataDir: /data/pgdata
+securityContext:
+  fsGroup: 999
+  runAsUser: 999
+containerSecurityContext:
+  enabled: true
+  runAsUser: 999
+volumePermissions:
+  image:
+    repository: arm32v7/alpine
+    tag: "3.12"
+livenessProbe:
+  initialDelaySeconds: 300
+readinessProbe:
+  initialDelaySeconds: 300
