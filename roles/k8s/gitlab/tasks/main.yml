@@ -1,0 +1,27 @@
+---
+
+- name: Make sure SSD is mounted
+  stat:
+    path: /mnt/ssd/gitlab
+  delegate_to: rpi-node3  
+  register: ssd_mounted
+
+- name: Create gitlab namespace
+  community.kubernetes.k8s:
+    name: gitlab
+    kind: Namespace
+    state: present
+  when: ssd_mounted.stat.exists
+
+- name: Deploy gitlab to kubernetes
+  community.kubernetes.k8s:
+    state: present
+    kind: "{{ item }}"
+    definition: "{{ lookup('template', '{{ item }}.yml.j2') | from_yaml_all }}"
+    validate:
+      fail_on_error: yes
+  when: ssd_mounted.stat.exists
+  loop:
+    - Deployment
+    - Service
+    - Ingress

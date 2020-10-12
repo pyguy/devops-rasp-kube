@@ -29,9 +29,9 @@
     name: "{{ apt_pkgs }}"
     state: present
 
-- name: Install openshift python library
+- name: Install pip packages
   pip:
-    name: openshift
+    name: "{{ pip_pkgs }}"
 
 - name: Download and install helm
   unarchive:
@@ -57,3 +57,26 @@
   apt:
     name: unattended-upgrades
     state: present
+
+- name: Add docker signing key
+  apt_key:
+    url: https://download.docker.com/linux/debian/gpg
+    state: present
+
+- name: Add Docker repository into sources list
+  apt_repository:
+    repo: "deb [arch=armhf] https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable"
+    state: present
+
+- name: Install Docker apt package
+  apt:
+    pkg:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+    update_cache: yes
+
+- name: Add pi user to the docker user group
+  user:
+    name: pi
+    group: docker

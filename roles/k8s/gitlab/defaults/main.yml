@@ -1,0 +1,9 @@
+---
+
+gitlab_image: pyguy/gitlab-arm:latest
+
+gitlab_host: gitlab.rpi.local
+gitlab_web_port: 80
+gitlab_registry_host: reg.gitlab.rpi.local
+gitlab_registry_port: 5050
+gitlab_ssh_port: 32222

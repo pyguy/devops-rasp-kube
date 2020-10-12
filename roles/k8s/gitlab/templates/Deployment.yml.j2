@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: gitlab
+  name: gitlab
+  labels:
+    app: gitlab
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: gitlab
+  template:
+    metadata:
+      labels:
+        app: gitlab
+    spec:
+      containers:
+        - name: gitlab
+          image: {{ gitlab_image }}
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: GITLAB_OMNIBUS_CONFIG
+              value: "external_url 'https://{{ gitlab_host }}'"
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/gitlab
+            - name: logs-volume
+              mountPath: /var/log/gitlab
+            - name: data-volume
+              mountPath: /var/opt/gitlab
+            - name: reg-volume
+              mountPath: /var/opt/gitlab/gitlab-rails/shared/registry
+            - name: uploads-volume
+              mountPath: /var/opt/gitlab/gitlab-rails/uploads
+          ports:
+            - name: http-web
+              containerPort: 80
+            - name: tcp-ssh
+              containerPort: 22
+            - name: http-reg
+              containerPort: 5050
+      volumes:
+        - name: config-volume
+          hostPath:
+            path: /mnt/ssd/gitlab/config
+        - name: logs-volume
+          hostPath:
+            path: /mnt/ssd/gitlab/logs
+        - name: data-volume
+          hostPath:
+            path: /mnt/ssd/gitlab/data
+        - name: reg-volume
+          hostPath:
+            path: /mnt/ssd/gitlab/reg
+        - name: uploads-volume
+          hostPath:
+            path: /mnt/ssd/gitlab/uploads
+      nodeSelector:
+        k3s.io/hostname: rpi-node3

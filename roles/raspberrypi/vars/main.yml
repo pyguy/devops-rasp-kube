@@ -2,7 +2,16 @@
 helm_version: v3.3.4
 
 apt_pkgs:
-    - python3-pip
-    - dnsutils
-    - mtr
-    - vim
+  - software-properties-common
+  - apt-transport-https
+  - ca-certificates
+  - python3-pip
+  - gnupg-agent
+  - dnsutils
+  - curl
+  - mtr
+  - vim
+
+pip_pkgs:
+  - openshift
+  - kubernetes-validate
