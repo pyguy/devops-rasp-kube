@@ -9,10 +9,10 @@ ingress:
   hosts:
     - {{ pihole_host }}
 serviceTCP:
-  loadBalancerIP: {{ hostvars['rpi-node1']['ansible_default_ipv4']['address'] }}
+  loadBalancerIP: {{ hostvars['rpi-master']['ansible_default_ipv4']['address'] }}
   type: LoadBalancer
 serviceUDP:
-  loadBalancerIP: {{ hostvars['rpi-node1']['ansible_default_ipv4']['address'] }}
+  loadBalancerIP: {{ hostvars['rpi-master']['ansible_default_ipv4']['address'] }}
   type: LoadBalancer
 resources:
   limits:

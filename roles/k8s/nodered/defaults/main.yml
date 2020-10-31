@@ -1,0 +1,6 @@
+---
+
+nodered_image: nodered/node-red:latest
+
+nodered_host: nodered.rpi.local
+nodered_web_port: 80

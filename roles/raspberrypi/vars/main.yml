@@ -1,5 +1,5 @@
 
-helm_version: v3.3.4
+helm_version: v3.4.0
 
 apt_pkgs:
   - software-properties-common

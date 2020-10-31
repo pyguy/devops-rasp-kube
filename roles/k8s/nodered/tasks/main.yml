@@ -1,0 +1,19 @@
+---
+
+- name: Create nodered namespace
+  community.kubernetes.k8s:
+    name: nodered
+    kind: Namespace
+    state: present
+
+- name: Deploy nodered to kubernetes
+  community.kubernetes.k8s:
+    state: present
+    kind: "{{ item }}"
+    definition: "{{ lookup('template', '{{ item }}.yml.j2') | from_yaml_all }}"
+    validate:
+      fail_on_error: yes
+  loop:
+    - Deployment
+    - Service
+    - Ingress

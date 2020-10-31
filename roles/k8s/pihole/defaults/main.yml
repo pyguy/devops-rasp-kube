@@ -1,5 +1,5 @@
 ---
 
-pihole_version: v5.1.2
+pihole_version: latest
 pihole_host: pi.hole
 pihole_admin_pass: PiHolePassword

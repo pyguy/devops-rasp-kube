@@ -6,3 +6,89 @@
     regexp: '^((?!.*\bcgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory\b).*)$'
     line: '\1 cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory'
   notify: reboot
+
+- name: Install general apt packages
+  apt:
+    name: "{{ apt_pkgs }}"
+    state: present
+
+- name: Install pip packages
+  pip:
+    name: "{{ pip_pkgs }}"
+
+- name: Download and install helm on arm64
+  unarchive:
+    src: "https://get.helm.sh/helm-{{ helm_version }}-linux-arm64.tar.gz"
+    dest: /usr/local/bin
+    remote_src: yes
+    extra_opts: "--strip-components=1"
+    owner: root
+    group: root
+    mode: u=rwx,g=rx,o=rx
+  when:
+    - ( ansible_facts.architecture is search("arm") and
+        ansible_facts.userspace_bits == "64" ) or
+      ansible_facts.architecture is search("aarch64")
+
+- name: Download and install helm on armhf
+  unarchive:
+    src: "https://get.helm.sh/helm-{{ helm_version }}-linux-arm.tar.gz"
+    dest: /usr/local/bin
+    remote_src: yes
+    extra_opts: "--strip-components=1"
+    owner: root
+    group: root
+    mode: u=rwx,g=rx,o=rx
+  when:
+    - ansible_facts.architecture is search("arm")
+    - ansible_facts.userspace_bits == "32"
+
+- name: Instal fail2ban package
+  apt:
+    name: fail2ban
+
+- name: Configure fail2ban local jail
+  template:
+    src: fail2ban.j2
+    dest: /etc/fail2ban/jail.local
+  notify: restart fail2ban
+
+- name: Install unattended-upgrades to perform security updates automatically
+  apt:
+    name: unattended-upgrades
+    state: present
+
+- name: Add docker signing key
+  apt_key:
+    url: https://download.docker.com/linux/debian/gpg
+    state: present
+
+- name: Add Docker repository into sources list for arm64
+  apt_repository:
+    repo: "deb [arch=arm64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+    state: present
+  when:
+    - ( ansible_facts.architecture is search("arm") and
+        ansible_facts.userspace_bits == "64" ) or
+      ansible_facts.architecture is search("aarch64")
+
+- name: Add Docker repository into sources list for armhf
+  apt_repository:
+    repo: "deb [arch=armhf] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+    state: present
+  when:
+    - ansible_facts.architecture is search("arm")
+    - ansible_facts.userspace_bits == "32"
+
+- name: Install Docker apt package
+  apt:
+    pkg:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+    update_cache: yes
+
+- name: Add ubuntu user to the docker user group
+  user:
+    name: ubuntu
+    group: docker

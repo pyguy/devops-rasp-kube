@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: nodered
+  name: nodered
+  labels:
+    app: nodered
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: nodered
+  template:
+    metadata:
+      labels:
+        app: nodered
+    spec:
+      containers:
+        - name: nodered
+          image: {{ nodered_image }}
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: TZ
+              value: Europe/Amsterdam
+          volumeMounts:
+            - name: data-volume
+              mountPath: /data
+          ports:
+            - name: nodered-web
+              containerPort: 1880
+      volumes:
+        - name: data-volume
+          hostPath:
+            path: /mnt/ssd/nodered
